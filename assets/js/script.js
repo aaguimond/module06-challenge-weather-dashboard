@@ -264,9 +264,9 @@ function getWeather () {
     let apiUrl;
 
     if(countryCode) {
-        apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${countryCode}&limit=3&appid=${apiKey}`
+        apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${countryCode}&limit=1&appid=${apiKey}`
     } else {
-        apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=3&appid=${apiKey}`
+        apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
     }
 
     fetch(apiUrl)
@@ -283,11 +283,12 @@ function getWeather () {
 
             const lat = data[0].lat;
             const lon = data[0].lon;
-            const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+            const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
             fetch(weatherApiUrl)
                 .then(response => response.json())
                 .then(weatherData => {
+                    console.log(weatherData)
                     const celsius = weatherData.main.temp;
                     const fahrenheit = (celsius * (9/5)) + 32;
 
