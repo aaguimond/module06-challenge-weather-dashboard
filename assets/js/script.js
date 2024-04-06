@@ -1,3 +1,5 @@
+// The below list allows us to translate an input country name into an ISO 3166 country code
+// Credit to incredimike on Git Hub https://gist.github.com/incredimike/1469814
 const countryListAlpha2 = {
     "AF": "Afghanistan",
     "AL": "Albania",
@@ -253,25 +255,38 @@ const countryListAlpha2 = {
     "AX": "Åland Islands"
 };
 
+// The below is an event listener to our get weather button
 document.getElementById("getWeather-button").addEventListener("click", function() {
     getWeather();
 })
 
+// The below function gathers our weather data with OpenWeather's APIs
 function getWeather () {
+    // Taking our city input and trimming it
     const city = document.getElementById("cityInput").value.trim();
+    // Taking our country input and trimming it
     const countryCode = document.getElementById("countryInput").value.trim();
+    // My API key for OpenWeather
     const apiKey = "87ad64c572e097f561cf3c5bd1718cde";
+    // Declaring our apiUrl variable for the functions below
     let apiUrl;
-
+    // Stating that if a user enters a country, then:
     if(countryCode) {
+        // We include the city, country, and API key in our geocoding API URL request
         apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${countryCode}&limit=1&appid=${apiKey}`
     } else {
+        // Or if they don't include a country, we just include the city and API key in our geocoding API URL request
         apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
     }
 
+    // We create a fetch request with our geocoding URL from above
     fetch(apiUrl)
+        // Then we store the response as a Javascript object
         .then(response => response.json())
+        // Then we take that data
         .then(data => {
+            // And if the data value is found to be falsy, we create HTML elements that display on the
+            // page stating that we haven't found a response for the city that the user entered
             if (data.length === 0) {
                 const weatherDataHTML = document.getElementById("weatherData");
                 const weatherNoResponse = document.createElement('p');
@@ -281,12 +296,17 @@ function getWeather () {
                 return;
             }
 
+            // If we do find city data, then we take the lattitude and longitude from the response and
+            // create a weather API URL using those coordinates
             const lat = data[0].lat;
             const lon = data[0].lon;
             const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
+            // We create a fetch request using the weather API URL from above
             fetch(weatherApiUrl)
+                // If we get a response, we turn it into a Javascript object
                 .then(response => response.json())
+                // We take that object and parse the variables and turn them into HTML elements
                 .then(weatherData => {
                     console.log(weatherData)
                     const celsius = weatherData.main.temp;
@@ -315,6 +335,7 @@ function getWeather () {
                     weatherDataHTML.appendChild(weatherHumidity);
                     weatherDataHTML.appendChild(weatherWindSpeed);
                 })
+                // If the fetch request fails the we log that to the console
                 .catch(error => console.log('Error getting weather data: ', error));
         })
         .catch(error => console.log('Error getting weather data: ', error));
