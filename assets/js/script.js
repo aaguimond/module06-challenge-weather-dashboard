@@ -306,93 +306,105 @@ function getWeather () {
             fetch(weatherApiUrl)
                 // If we get a response, we turn it into a Javascript object
                 .then(response => response.json())
-                // We take that object and parse the variables and turn them into HTML elements
+                // We take that object data and will translate it into HTML elements of the current weather and the forecast
                 .then(weatherData => {
-                    console.log(weatherData)
-                    const celsius = weatherData.main.temp;
-                    const fahrenheit = (celsius * (9/5)) + 32;
-
-                    const weatherDataMain = document.getElementById("weatherData");
-                    weatherDataMain.setAttribute('class', 'weatherDataMain')
-
-                    const weatherHeaderMain = document.createElement('div');
-                    weatherHeaderMain.setAttribute('class', 'weatherHeaderMain')
-
-                    const weatherDisplay = document.createElement('h3');
-                    weatherDisplay.textContent = weatherData.name;
-
-                    const weatherTemperature = document.createElement('p');
-                    weatherTemperature.textContent = `Temperature: ${celsius.toFixed(0)}°C / ${fahrenheit.toFixed(0)}°F`;
-
-                    const weatherDescription = document.createElement('p');
-                    weatherDescription.textContent = `Description: ${weatherData.weather[0].description}`;
-
-                    const weatherHumidity = document.createElement('p');
-                    weatherHumidity.textContent = `Humidity: ${weatherData.main.humidity}%`;
-
-                    const weatherWindSpeed = document.createElement('p');
-                    weatherWindSpeed.textContent = `Wind Speed: ${weatherData.wind.speed} m/s`;
-
-                    let weatherIcon = new Image();
-                    
-                    if (weatherData.weather[0].main === "Thunderstorm" ||
-                        (weatherData.weather[0].id >= 200 && weatherData.weather[0].main <= 299)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/11d.png"
-                    } else if (weatherData.weather[0].main === "Drizzle" ||
-                        (weatherData.weather[0].id >= 300 && weatherData.weather[0].main <= 399)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/09d.png"
-                    } else if (weatherData.weather[0].main === "Rain" &&
-                        (weatherData.weather[0].id >= 500 && weatherData.weather[0].main <= 504)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/10d.png"
-                    } else if (weatherData.weather[0].main === "Rain" &&
-                        (weatherData.weather[0].id === 511)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/13d.png"
-                    } else if (weatherData.weather[0].main === "Rain" &&
-                        (weatherData.weather[0].id >= 520 && weatherData.weather[0].main <= 599)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/09d.png"
-                    } else if (weatherData.weather[0].main === "Snow" ||
-                        (weatherData.weather[0].id >= 600 && weatherData.weather[0].main <= 699)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/13d.png"
-                    } else if (weatherData.weather[0].main === "Mist" ||
-                        (weatherData.weather[0].main === "Smoke") ||
-                        (weatherData.weather[0].main === "Haze") ||
-                        (weatherData.weather[0].main === "Dust") ||
-                        (weatherData.weather[0].main === "Fog") ||
-                        (weatherData.weather[0].main === "Sand") ||
-                        (weatherData.weather[0].main === "Ash") ||
-                        (weatherData.weather[0].main === "Squall") ||
-                        (weatherData.weather[0].main === "Tornado") ||
-                        (weatherData.weather[0].id >= 700 && weatherData.weather[0].main <= 799)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/50d.png"
-                    } else if (weatherData.weather[0].main === "Clear" ||
-                        (weatherData.weather[0].id === 800)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/01d.png"
-                    } else if (weatherData.weather[0].main === "Clouds" &&
-                        (weatherData.weather[0].id === 801)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/02d.png"
-                    } else if (weatherData.weather[0].main === "Clouds" &&
-                        (weatherData.weather[0].id === 802)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/03d.png"
-                    } else if (weatherData.weather[0].main === "Clouds" &&
-                        (weatherData.weather[0].id >= 803 && weatherData.weather[0].id <= 804)) {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/04d.png"
-                    } else {
-                        weatherIcon.src = "https://openweathermap.org/img/wn/03d.png"
-                    }
-
-                    const weatherIconWrapper = document.createElement('p')
-
-                    weatherIconWrapper.appendChild(weatherIcon)
-                    weatherHeaderMain.appendChild(weatherDisplay);
-                    weatherHeaderMain.appendChild(weatherIconWrapper);
-                    weatherDataMain.appendChild(weatherHeaderMain);
-                    weatherDataMain.appendChild(weatherTemperature);
-                    weatherDataMain.appendChild(weatherDescription);
-                    weatherDataMain.appendChild(weatherHumidity);
-                    weatherDataMain.appendChild(weatherWindSpeed);
+                    // The below function will use the current weather data
+                    displayWeather(weatherData.current)
+                    // The below function will use the forecast for the next five days
+                    displayForecast(weatherData.daily.slice(1,6));
                 })
                 // If the fetch request fails the we log that to the console
                 .catch(error => console.log('Error getting weather data: ', error));
         })
         .catch(error => console.log('Error getting weather data: ', error));
+}
+
+// The below parses the current weather data into HTML elements
+function displayWeather(currentWeather) {
+    const celsius = weatherData.main.temp;
+    const fahrenheit = (celsius * (9/5)) + 32;
+
+    const weatherDataMain = document.getElementById("weatherData");
+    weatherDataMain.setAttribute('class', 'weatherDataMain')
+
+    const weatherHeaderMain = document.createElement('div');
+    weatherHeaderMain.setAttribute('class', 'weatherHeaderMain')
+
+    const weatherDisplay = document.createElement('h3');
+    weatherDisplay.textContent = weatherData.name;
+
+    const weatherTemperature = document.createElement('p');
+    weatherTemperature.textContent = `Temperature: ${celsius.toFixed(0)}°C / ${fahrenheit.toFixed(0)}°F`;
+
+    const weatherDescription = document.createElement('p');
+    weatherDescription.textContent = `Description: ${weatherData.weather[0].description}`;
+
+    const weatherHumidity = document.createElement('p');
+    weatherHumidity.textContent = `Humidity: ${weatherData.main.humidity}%`;
+
+    const weatherWindSpeed = document.createElement('p');
+    weatherWindSpeed.textContent = `Wind Speed: ${weatherData.wind.speed} m/s`;
+
+    // The following conditional statements give us the appropriate icon for the weather
+    let weatherIcon = new Image();
+    
+    if (weatherData.weather[0].main === "Thunderstorm" ||
+        (weatherData.weather[0].id >= 200 && weatherData.weather[0].main <= 299)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/11d.png"
+    } else if (weatherData.weather[0].main === "Drizzle" ||
+        (weatherData.weather[0].id >= 300 && weatherData.weather[0].main <= 399)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/09d.png"
+    } else if (weatherData.weather[0].main === "Rain" &&
+        (weatherData.weather[0].id >= 500 && weatherData.weather[0].main <= 504)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/10d.png"
+    } else if (weatherData.weather[0].main === "Rain" &&
+        (weatherData.weather[0].id === 511)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/13d.png"
+    } else if (weatherData.weather[0].main === "Rain" &&
+        (weatherData.weather[0].id >= 520 && weatherData.weather[0].main <= 599)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/09d.png"
+    } else if (weatherData.weather[0].main === "Snow" ||
+        (weatherData.weather[0].id >= 600 && weatherData.weather[0].main <= 699)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/13d.png"
+    } else if (weatherData.weather[0].main === "Mist" ||
+        (weatherData.weather[0].main === "Smoke") ||
+        (weatherData.weather[0].main === "Haze") ||
+        (weatherData.weather[0].main === "Dust") ||
+        (weatherData.weather[0].main === "Fog") ||
+        (weatherData.weather[0].main === "Sand") ||
+        (weatherData.weather[0].main === "Ash") ||
+        (weatherData.weather[0].main === "Squall") ||
+        (weatherData.weather[0].main === "Tornado") ||
+        (weatherData.weather[0].id >= 700 && weatherData.weather[0].main <= 799)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/50d.png"
+    } else if (weatherData.weather[0].main === "Clear" ||
+        (weatherData.weather[0].id === 800)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/01d.png"
+    } else if (weatherData.weather[0].main === "Clouds" &&
+        (weatherData.weather[0].id === 801)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/02d.png"
+    } else if (weatherData.weather[0].main === "Clouds" &&
+        (weatherData.weather[0].id === 802)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/03d.png"
+    } else if (weatherData.weather[0].main === "Clouds" &&
+        (weatherData.weather[0].id >= 803 && weatherData.weather[0].id <= 804)) {
+        weatherIcon.src = "https://openweathermap.org/img/wn/04d.png"
+    } else {
+        weatherIcon.src = "https://openweathermap.org/img/wn/03d.png"
+    }
+
+    const weatherIconWrapper = document.createElement('p')
+
+    weatherIconWrapper.appendChild(weatherIcon)
+    weatherHeaderMain.appendChild(weatherDisplay);
+    weatherHeaderMain.appendChild(weatherIconWrapper);
+    weatherDataMain.appendChild(weatherHeaderMain);
+    weatherDataMain.appendChild(weatherTemperature);
+    weatherDataMain.appendChild(weatherDescription);
+    weatherDataMain.appendChild(weatherHumidity);
+    weatherDataMain.appendChild(weatherWindSpeed);
+}
+
+function displayForecast(forecast) {
+
 }
