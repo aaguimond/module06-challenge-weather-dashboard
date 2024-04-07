@@ -1,0 +1,39 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body header {
+    max-height: 14%;
+    min-height: 14%;
+    width: 100%
+}
+
+.content-wrapper {
+    display: flex;
+}
+
+.sidebar {
+    max-width: 25%;
+    max-height: 85%
+}
+
+body div div input,
+body div div button {
+    display: block;
+    margin: 2vh;
+}
+
+.weatherDataContainer {
+    max-width: 74%;
+    max-height: 85%;
+    border: 2px solid black;
+}
+
+.weatherDataMain {
+    display: block;
+}
+
+.weatherHeaderMain {
+    display: inline-flex;
+}
