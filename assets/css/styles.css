@@ -17,7 +17,7 @@ body header {
 }
 
 
-.sidebar-wrapper{
+.sidebar-wrapper {
     width: 25%;
     height: 97vh
 }
@@ -39,6 +39,7 @@ body header {
     text-align: center;
     background-color: #413aff;
     color: white;
+    font-size: 30px;
 }
 
 .weatherInput {
@@ -92,6 +93,7 @@ body div div button {
 
 #weatherDataMainContainer {
     width: auto;
+    height: 47%;
     margin: 1%;
     padding: 0 1% 0.25% 1%;
     background: linear-gradient(0.25turn, #00b3ff, #fffef1, #ff8000);;
@@ -117,6 +119,7 @@ body div div button {
 #weatherForecastDataContainer {
     width: 100%;
     display: flex;
+    height: 48%
 }
 
 .forecastDisplay {
@@ -135,6 +138,22 @@ body div div button {
     1px 1px 0 #000; 
 }
 
+.forecastHeader {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    margin: 0;
+}
+
+.forecastHeader p {
+    margin: 5%;
+}
+
+.forecastSubtext {
+    font-size: 85%;
+}
+
 #footer {
     width: 100%;
     text-align: center;
@@ -142,5 +161,277 @@ body div div button {
 }
 
 .invisible {
-    display: none
+    display: none;
+}
+
+@media screen and (max-width:922px) {
+    .sidebar-header h1 {
+        font-size: 24px;
+    }
+    .weatherInput h2 {
+        font-size: 20px;
+    }
+    #searchHistory-title {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width:740px) {
+    .sidebar-header h1 {
+        font-size: 20px;
+    }
+    .weatherInput h2 {
+        font-size: 18px;
+    }
+    #searchHistory-title {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width:660px) {
+    .sidebar-wrapper {
+        width: 30%;
+    }
+    #weatherForecastDataContainer {
+        width: 100%;
+        display: flex;
+        height: 50%;
+        flex-direction: column;
+    }
+    #weatherForecastDataContainer div {
+        height: 23.5%
+    }
+    .forecastDisplay {
+        width: 98%;
+        height: 19%;
+        margin: 0.5% 1% 0.25% 1%;
+        border-bottom: 2px white solid;
+        background: linear-gradient(0.25turn, #413aff, #ffffff);
+        display: inline-flex;
+        justify-content: space-around;
+    }
+    .forecastHeader {
+        display: block;
+        align-items: center;
+        justify-content: space-around;
+        width: auto;
+        margin: 0;
+    }
+    .forecastIconWrapper {
+        height: 30%;
+        width: 70%;
+        align-content: center;
+    }
+    .forecastHeader p img {
+        scale: 50%;
+    }
+}
+
+@media screen and (max-width:580px) {
+    .weatherInput button {
+        font-size: 10px;
+        width: 90%;
+        margin: 5%
+    }
+    .searchHistory button {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width:534px) {
+    .sidebar-wrapper {
+        width: 35%;
+    }
+    #weatherForecastDataContainer {
+        height: 51%
+    }
+}
+
+@media screen and (max-width:474px) {
+    .sidebar-wrapper {
+        width: 40%;
+    }
+    #weatherDataMainContainer {
+        font-size: 14px;
+    }
+    #weatherForecastDataContainer {
+        height: 52%
+    }
+    .forecastSubtext {
+        font-size: 10px;
+    }
+    .searchHistory button {
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width:474px) {
+    .sidebar-header h1 {
+        font-size: 18px;
+    }
+    .weatherInput h2 {
+        font-size: 16px;
+    }
+    #searchHistory-title {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .content-wrapper {
+        display: inline-block;
+        width: 100%;
+        height: 50vh;
+    }
+    .sidebar-wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%
+    }
+    .sidebar {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(#413aff, #ffffff);
+    }
+    .weatherInput {
+        width: 42%;
+        display: inline-block;
+        position: absolute;
+        top: 8%;
+        left: 2%
+    }
+    .searchHistoryContainer {
+        width: 55%;
+        display: inline-block;
+        border: none;
+        position: absolute;
+        top: 8%;
+        right: 2%;
+        left: auto
+    }
+    .searchHistory button {
+        width: 90%;
+        margin: 0 5% 1% 5%
+    }
+    .forecastDisplay {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: end;
+        height: fit-content
+    }
+    .forecastDisplay .forecastSubtext {
+        margin: 1%;
+    }
+    .forecastHeader {
+        width: 28%;
+        float: left;
+        max-height: 2em;
+    }
+    .forecastSubtext {
+        font-size: 14px;
+        width: 33%;
+    }
+}
+
+@media screen and (max-width:354px) {
+    #weatherForecastDataContainer {
+        height: 53%
+    }
+    .searchHistory button {
+        font-size: 10px;
+    }
+}
+@media screen and (max-width:230px) {
+    .weatherInput {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
+        position: relative;
+    }
+    .weatherInput button {
+        width: 90%;
+        margin: 2.5%
+    }
+    .searchHistoryContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        border: none;
+        position: relative;
+        top: 0;
+        right: auto;
+        left: auto;
+        justify-content: center;
+    }
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto
+    }
+    .sidebar-header h1 {
+        margin: 0%;
+        padding: 2%;
+        text-align: center;
+        background-color: #413aff;
+        color: white;
+        font-size: 30px;
+    }
+    .weatherInput {
+        justify-content: center;
+        display: block;
+        width: 100%;
+    }
+    .weatherInput h2 {
+        margin: 2.5%;
+    }
+    body div div input,
+    body div div button {
+        margin: 2.5%;
+    }
+    #searchHistory-title {
+        text-align: center;
+        color: white;
+        margin-top: 5%;
+    }
+    .searchHistoryContainer {
+        border-top: 5px white solid;
+        align-items: center;
+        margin-bottom: 4%;
+    }
+    #searchHistory-title {
+        margin: 2.5%
+    }
+    .searchHistory button {
+        width: 90%;
+        margin: 0 5% 0 5%;
+        align-items: center;
+    }
+}
+@media screen and (max-width:1680px) {
+    #weatherForecastDataContainer {
+        height: 48%
+    }
+}
+@media screen and (max-width:2080px) {
+    #weatherForecastDataContainer {
+        height: 46%
+    }
+}
+@media screen and (max-width:2560px) {
+    #weatherForecastDataContainer {
+        height: 44%
+    }
+}
+@media screen and (max-width:3280px) {
+    #weatherForecastDataContainer {
+        height: 42%
+    }
+}
+@media screen and (max-width:4080px) {
+    #weatherForecastDataContainer {
+        height: 40%
+    }
 }

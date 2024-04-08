@@ -1,5 +1,6 @@
 // The below list allows us to translate an input country name into an ISO 3166 country code
 // Credit to incredimike on Git Hub https://gist.github.com/incredimike/1469814
+// Minimally altered
 const countryListAlpha2 = {
     "AF": "Afghanistan",
     "AL": "Albania",
@@ -257,22 +258,18 @@ const countryListAlpha2 = {
 
 // The below is an event listener to our get weather button
 document.getElementById("getWeather-button").addEventListener("click", function() {
+    // We get our input data from the text boxes
     const cityInput = document.getElementById("cityInput").value.trim();
     const countryInput = document.getElementById("countryInput").value.trim();
+    // We run the getCurrentWeather function using the input data
     getCurrentWeather(cityInput, countryInput);
-
-    const weatherDataDisplayed = document.getElementById("weatherDataMainContainer")
-    const enterWeatherMessageHTML = document.getElementById("enterWeatherMessage")
-
-    if (weatherDataDisplayed.innerHTML === "") {
-        enterWeatherMessageHTML.classList.add('invisible')
-    } else {
-        enterWeatherMessageHTML.classList.remove('invisible')
-    }
 })
 
 // The below function gathers our weather data with OpenWeather's APIs
 function getCurrentWeather (cityInput = "", countryInput = "") {
+    // Displaying our container when weather data is fetched
+    const weatherDataMainContainer = document.getElementById("weatherDataMainContainer")
+    weatherDataMainContainer.classList.remove('invisible')
     // Taking our city input and trimming it
     const city = cityInput.trim();
     // Taking our country input and trimming it
@@ -321,21 +318,22 @@ function getCurrentWeather (cityInput = "", countryInput = "") {
                 .then(weatherData => {
                     // The below function will use the weather data
                     displayWeather(weatherData);
-
+                    // We run our saveSearches function to save our city and countryCode values
                     saveSearches(city, countryCode);
                 })
                 // If the fetch request fails the we log that to the console
                 .catch(error => console.log('Error getting weather data: ', error));
+            // We run our getForecast function using the lattitude and longitude variables from our geocoding fetch
             getForecast(lat, lon)
         })
         .catch(error => console.log('Error getting weather data: ', error));
 
 }
-
+// Getting our forecast data
 function getForecast(lat, lon) {
     const apiKey = "87ad64c572e097f561cf3c5bd1718cde";
     const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-
+    // Fetching data with API and passing the data to our displayForecast function
     fetch(forecastApiUrl)
         .then(response => response.json())
         .then(forecastData => {
@@ -370,14 +368,13 @@ function displayWeather(weatherData) {
     const weatherWindSpeed = document.createElement('p');
     weatherWindSpeed.textContent = `Wind Speed: ${weatherData.wind.speed} m/s`;
 
-    // The following conditional statements give us the appropriate icon for the weather
     const weatherIconWrapper = document.createElement('p');
     const weatherIconCode = weatherData.weather[0].icon;
     const weatherIconUrl = `https://openweathermap.org/img/wn/${weatherIconCode}.png`;
     const weatherIcon = document.createElement('img');
     weatherIcon.setAttribute('src', weatherIconUrl)
     weatherIcon.setAttribute('alt', 'weather icon');
-
+    // Appending HTML elements to the DOM
     weatherIconWrapper.appendChild(weatherIcon)
     weatherHeaderMain.appendChild(weatherDisplay);
     weatherHeaderMain.appendChild(weatherIconWrapper);
@@ -387,35 +384,39 @@ function displayWeather(weatherData) {
     weatherDataMain.appendChild(weatherHumidity);
     weatherDataMain.appendChild(weatherWindSpeed);
 }
-
+// Displaying our forecast data
 function displayForecast(forecast) {
+    // Finding the forecast contianer and clearing it
     const forecastContainerHTML = document.getElementById("weatherForecastDataContainer");
     forecastContainerHTML.innerHTML = "";
-
+    // Forecast data is gathered in 3-hour data points. We consolidate each consecutive set of 8 for
+    // each of the five days of forecast data
     for (let i = 0; i < forecast.length; i += 8) {
         
         const dayForecast = forecast[i];
+        // Translating unix timecode to milliseconds
         const dateForecast = new Date(dayForecast.dt * 1000);
+        // Displaying a shortened day (e.g. Mon, Tue, Wed)
         const dayOfWeekForecast = dateForecast.toLocaleDateString('en-US', { weekday: 'short'});
-
+        // Declaring our weather data sums for our averages
         let totalTemperature = 0;
         let totalHumidity = 0;
         let totalWindSpeed = 0;
-
+        // Adding each of our weather data points in its set of 8
         for (let j = i; j < i + 8; j++) {
             totalTemperature += forecast[j].main.temp;
             totalHumidity += forecast[j].main.humidity;
             totalWindSpeed += forecast[j].wind.speed;
         }
-
+        // Averaging each set of 8
         const celsiusForecast = totalTemperature / 8;
         const fahrenheitForecast = (celsiusForecast * (9/5)) + 32;
         const humidityForecast = totalHumidity / 8;
         const windSpeedForecast = totalWindSpeed / 8;
-
+        // Taking the condition from the 3rd, 11th, 19th, 27th, and 35th indexes (roughly halfway in each
+        // set of 8)
         const weatherConditionForecast = forecast[i + 3].weather[0].main;
-
-
+        // Creating our HTML elements
         const forecastHTML = document.createElement('div');
         forecastHTML.setAttribute('class', 'forecastDisplay');
 
@@ -425,18 +426,25 @@ function displayForecast(forecast) {
 
         const temperatureForecastHTML = document.createElement('p');
         temperatureForecastHTML.textContent = `${celsiusForecast.toFixed(0)}°C / ${fahrenheitForecast.toFixed(0)}`;
+        temperatureForecastHTML.classList.add('forecastSubtext')
 
         const weatherConditionForecastHTML = document.createElement('p');
         weatherConditionForecastHTML.textContent = weatherConditionForecast
+        weatherConditionForecastHTML.classList.add('forecastSubtext')
 
         const humidityForecastHTML = document.createElement('p');
         humidityForecastHTML.textContent = `Humidity: ${humidityForecast.toFixed(0)}%`;
+        humidityForecastHTML.classList.add('forecastSubtext')
     
         const windSpeedForecastHTML = document.createElement('p');
         windSpeedForecastHTML.textContent = `Wind Speed: ${windSpeedForecast.toFixed(2)} m/s`;
+        windSpeedForecastHTML.classList.add('forecastSubtext')
 
         const forecastHeaderHTML = document.createElement('p')
+        forecastHeaderHTML.classList.add('forecastHeader')
+
         const forecastIconWrapper = document.createElement('p')
+        forecastIconWrapper.classList.add('forecastIconWrapper')
         const forecastIconCode = forecast[i].weather[0].icon;
         const forecastIconUrl = `https://openweathermap.org/img/wn/${forecastIconCode}.png`;
         const forecastIcon = document.createElement('img');
@@ -454,27 +462,30 @@ function displayForecast(forecast) {
         forecastContainerHTML.appendChild(forecastHTML);
     };
 }
-
+// Saving our searches to local data
 function saveSearches(city, country) {
+    // Declaring our searchHistory variable and gathering any local storage data. If none exists,
+    // we create an empty array
     let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
-
+    // If any location within our stored search history is searched again, we move it
+    // to the top of the search history instead of duplicating it
     searchHistory = searchHistory.filter(search => !(search.city === city && search.country === country))
-
     searchHistory.unshift({ city, country });
-
+    // Limiting our search history to 7 entries
     searchHistory = searchHistory.slice(0, 7)
-
+    // Saving our search history
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-
+    // Calling our displaySearchHistory function to update searches to the HTML once they're made
     displaySearchHistory();
 }
-
+// Displaying our search history data in the DOM
 function displaySearchHistory() {
     const searchHistoryContainer = document.querySelector('.searchHistory');
     searchHistoryContainer.innerHTML = "";
 
     const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
-
+    // Making each search history entry a button that can call a search for the same variables
+    // when it's clicked
     searchHistory.forEach(search => {
         const button = document.createElement('button');
         button.textContent = `${search.city}, ${search.country}`;
@@ -485,7 +496,9 @@ function displaySearchHistory() {
         searchHistoryContainer.appendChild(button);
     })
 }
-
+// On page load, we display search history and make our weatherDataMainContainer invisible
 window.onload = function() {
     displaySearchHistory();
+    const weatherDataMainContainer = document.getElementById("weatherDataMainContainer")
+    weatherDataMainContainer.classList.add('invisible')
 }
