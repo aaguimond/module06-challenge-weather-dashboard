@@ -257,15 +257,26 @@ const countryListAlpha2 = {
 
 // The below is an event listener to our get weather button
 document.getElementById("getWeather-button").addEventListener("click", function() {
-    getCurrentWeather();
+    const cityInput = document.getElementById("cityInput").value.trim();
+    const countryInput = document.getElementById("countryInput").value.trim();
+    getCurrentWeather(cityInput, countryInput);
+
+    const weatherDataDisplayed = document.getElementById("weatherDataMainContainer")
+    const enterWeatherMessageHTML = document.getElementById("enterWeatherMessage")
+
+    if (weatherDataDisplayed.innerHTML === "") {
+        enterWeatherMessageHTML.classList.add('invisible')
+    } else {
+        enterWeatherMessageHTML.classList.remove('invisible')
+    }
 })
 
 // The below function gathers our weather data with OpenWeather's APIs
-function getCurrentWeather () {
+function getCurrentWeather (cityInput = "", countryInput = "") {
     // Taking our city input and trimming it
-    const city = document.getElementById("cityInput").value.trim();
+    const city = cityInput.trim();
     // Taking our country input and trimming it
-    const countryCode = document.getElementById("countryInput").value.trim();
+    const countryCode = countryInput.trim();
     // My API key for OpenWeather
     const apiKey = "87ad64c572e097f561cf3c5bd1718cde";
     // Declaring our apiUrl variable for the functions below
@@ -310,12 +321,15 @@ function getCurrentWeather () {
                 .then(weatherData => {
                     // The below function will use the weather data
                     displayWeather(weatherData);
+
+                    saveSearches(city, countryCode);
                 })
                 // If the fetch request fails the we log that to the console
                 .catch(error => console.log('Error getting weather data: ', error));
             getForecast(lat, lon)
         })
         .catch(error => console.log('Error getting weather data: ', error));
+
 }
 
 function getForecast(lat, lon) {
@@ -439,4 +453,39 @@ function displayForecast(forecast) {
         forecastHTML.appendChild(windSpeedForecastHTML);
         forecastContainerHTML.appendChild(forecastHTML);
     };
+}
+
+function saveSearches(city, country) {
+    let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+    searchHistory = searchHistory.filter(search => !(search.city === city && search.country === country))
+
+    searchHistory.unshift({ city, country });
+
+    searchHistory = searchHistory.slice(0, 7)
+
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+
+    displaySearchHistory();
+}
+
+function displaySearchHistory() {
+    const searchHistoryContainer = document.querySelector('.searchHistory');
+    searchHistoryContainer.innerHTML = "";
+
+    const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+    searchHistory.forEach(search => {
+        const button = document.createElement('button');
+        button.textContent = `${search.city}, ${search.country}`;
+        button.addEventListener('click', function() {
+            getCurrentWeather(search.city, search.country);
+        });
+
+        searchHistoryContainer.appendChild(button);
+    })
+}
+
+window.onload = function() {
+    displaySearchHistory();
 }

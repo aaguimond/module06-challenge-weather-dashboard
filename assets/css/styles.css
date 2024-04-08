@@ -12,20 +12,20 @@ body header {
 .content-wrapper {
     display: flex;
     justify-content: space-around;
-    height: 93%;
+    height: 94vh;
     width: 100%;
 }
 
 
 .sidebar-wrapper{
     width: 25%;
-    height: auto
+    height: 97vh
 }
 
 .sidebar {
     width: 96%;
     height: 100%;
-    background-color:rgb(135, 131, 254);
+    background: linear-gradient(#413aff, #ffffff);
     margin: 0 1% 1% 1%;
 }
 
@@ -61,15 +61,31 @@ body div div button {
 
 body div div button {
     width: 50%;
-    margin: 2% 25% 4% 25%
+    margin: 2% 25% 10% 25%
 }
 
-.searchHistory {
+#searchHistory-title {
+    text-align: center;
+    color: white;
+    margin-top: 5%;
+}
 
+.searchHistoryContainer {
+    border-top: 5px white solid;
+}
+
+.searchHistory button {
+    width: 90%;
+    margin: 0 5% 2% 5%
+}
+
+.contentContainer {
+    width: 100%;
+    height: auto;
 }
 
 .weatherDataContainer {
-    width: 75%;
+    width: 100%;
     height: 100%;
     border: 2px solid black;
 }
@@ -88,9 +104,9 @@ body div div button {
 
 #weatherHeaderMain h3 {
     align-content: center;
-    font-size: 125%;
+    font-size: 150%;
     width: auto;
-    color: rgb(255, 0, 0);
+    color: white;
     text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
@@ -119,6 +135,12 @@ body div div button {
     1px 1px 0 #000; 
 }
 
+#footer {
+    width: 100%;
+    text-align: center;
+    margin: 0.5%;
+}
+
 .invisible {
-    display: none;
+    display: none
 }
