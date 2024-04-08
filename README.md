@@ -34,15 +34,15 @@
 
 **Below is a screenshot of the page**
 
-![a screenshot of the weather dashboard page on large screens with no weather content displayed](/assets/screenshots/WeatherDashboardLargeScreenEmptyDisplay.png?raw=true)
+![a screenshot of the weather dashboard page on large screens with no weather content displayed](./assets/screenshots/WeatherDashboardLargeScreenEmptyDisplay.png?raw=true)
 
-![a screenshot of the weather dashboard page on large screens with weather content displayed](/assets/screenshots/WeatherDashboardLargeScreenDisplay.png?raw=true)
+![a screenshot of the weather dashboard page on large screens with weather content displayed](./assets/screenshots/WeatherDashboardLargeScreenDisplay.png.png?raw=true)
 
-![a screenshot of the weather dashboard page on medium screens with weather content displayed](/assets/screenshots/WeatherDashboardMediumScreen.png?raw=true)
+![a screenshot of the weather dashboard page on medium screens with weather content displayed](./assets/screenshots/WeatherDashboardMediumScreen.png?raw=true)
 
-![a screenshot of the weather dashboard page on small screens with weather content displayed](/assets/screenshots/WeatherDashboardSmallScreen.png?raw=true)
+![a screenshot of the weather dashboard page on small screens with weather content displayed](./assets/screenshots/WeatherDashboardSmallScreen.png?raw=true)
 
-![a screenshot of the weather dashboard page on very small screens with weather content displayed](/assets/screenshots/WeatherDashboardVeryThin.png?raw=true)
+![a screenshot of the weather dashboard page on very small screens with weather content displayed](./assets/screenshots/WeatherDashboardVeryThin.png?raw=true)
 
 ## Purpose
 
