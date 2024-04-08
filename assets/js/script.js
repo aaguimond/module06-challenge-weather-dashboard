@@ -425,7 +425,7 @@ function displayForecast(forecast) {
         dayOfWeekForecastHTML.textContent = dayOfWeekForecast;
 
         const temperatureForecastHTML = document.createElement('p');
-        temperatureForecastHTML.textContent = `${celsiusForecast.toFixed(0)}°C / ${fahrenheitForecast.toFixed(0)}`;
+        temperatureForecastHTML.textContent = `${celsiusForecast.toFixed(0)}°C / ${fahrenheitForecast.toFixed(0)}°F`;
         temperatureForecastHTML.classList.add('forecastSubtext')
 
         const weatherConditionForecastHTML = document.createElement('p');
