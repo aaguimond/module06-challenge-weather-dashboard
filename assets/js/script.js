@@ -281,10 +281,10 @@ function getCurrentWeather (cityInput = "", countryInput = "") {
     // Stating that if a user enters a country, then:
     if(countryCode) {
         // We include the city, country, and API key in our geocoding API URL request
-        apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${countryCode}&limit=1&appid=${apiKey}`
+        apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city},${countryCode}&limit=1&appid=${apiKey}`
     } else {
         // Or if they don't include a country, we just include the city and API key in our geocoding API URL request
-        apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
+        apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
     }
 
     // We create a fetch request with our geocoding URL from above
