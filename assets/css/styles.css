@@ -11,29 +11,114 @@ body header {
 
 .content-wrapper {
     display: flex;
+    justify-content: space-around;
+    height: 93%;
+    width: 100%;
+}
+
+
+.sidebar-wrapper{
+    width: 25%;
+    height: auto
 }
 
 .sidebar {
-    max-width: 25%;
-    max-height: 85%
+    width: 96%;
+    height: 100%;
+    background-color:rgb(135, 131, 254);
+    margin: 0 1% 1% 1%;
+}
+
+.sidebar-header {
+    border-bottom: 5px white solid;
+}
+
+.sidebar-header h1 {
+    margin: 0%;
+    padding: 2%;
+    text-align: center;
+    background-color: #413aff;
+    color: white;
+}
+
+.weatherInput {
+    justify-content: center;
+    display: block;
+    width: 100%;
+}
+
+.weatherInput h2 {
+    margin: 5% 5% 2%;
+    text-align: center;
+    color: white;
 }
 
 body div div input,
 body div div button {
-    display: block;
-    margin: 2vh;
+    margin: 2% 5% 1% 5%;
+    width: 90%;
+}
+
+body div div button {
+    width: 50%;
+    margin: 2% 25% 4% 25%
+}
+
+.searchHistory {
+
 }
 
 .weatherDataContainer {
-    max-width: 74%;
-    max-height: 85%;
+    width: 75%;
+    height: 100%;
     border: 2px solid black;
 }
 
-.weatherDataMain {
-    display: block;
+#weatherDataMainContainer {
+    width: auto;
+    margin: 1%;
+    padding: 0 1% 0.25% 1%;
+    background: linear-gradient(0.25turn, #00b3ff, #fffef1, #ff8000);;
 }
 
-.weatherHeaderMain {
+#weatherHeaderMain {
+    margin: 0 2% 0 2%;
     display: inline-flex;
+}
+
+#weatherHeaderMain h3 {
+    align-content: center;
+    font-size: 125%;
+    width: auto;
+    color: rgb(255, 0, 0);
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; 
+}
+
+#weatherForecastDataContainer {
+    width: 100%;
+    display: flex;
+}
+
+.forecastDisplay {
+    width: 20%;
+    margin: 0 1% 0 1%;
+    padding: 0 1% 0 1%;
+    background: linear-gradient(#413aff, #ffffff);
+}
+
+.forecastDay {
+    color: white;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; 
+}
+
+.invisible {
+    display: none;
 }

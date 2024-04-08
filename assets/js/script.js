@@ -257,11 +257,11 @@ const countryListAlpha2 = {
 
 // The below is an event listener to our get weather button
 document.getElementById("getWeather-button").addEventListener("click", function() {
-    getWeather();
+    getCurrentWeather();
 })
 
 // The below function gathers our weather data with OpenWeather's APIs
-function getWeather () {
+function getCurrentWeather () {
     // Taking our city input and trimming it
     const city = document.getElementById("cityInput").value.trim();
     // Taking our country input and trimming it
@@ -300,7 +300,7 @@ function getWeather () {
             // create a weather API URL using those coordinates
             const lat = data[0].lat;
             const lon = data[0].lon;
-            const weatherApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+            const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
             // We create a fetch request using the weather API URL from above
             fetch(weatherApiUrl)
@@ -308,30 +308,41 @@ function getWeather () {
                 .then(response => response.json())
                 // We take that object data and will translate it into HTML elements of the current weather and the forecast
                 .then(weatherData => {
-                    // The below function will use the current weather data
-                    displayWeather(weatherData.current)
-                    // The below function will use the forecast for the next five days
-                    displayForecast(weatherData.daily.slice(1,6));
+                    // The below function will use the weather data
+                    displayWeather(weatherData);
                 })
                 // If the fetch request fails the we log that to the console
                 .catch(error => console.log('Error getting weather data: ', error));
+            getForecast(lat, lon)
         })
         .catch(error => console.log('Error getting weather data: ', error));
 }
 
+function getForecast(lat, lon) {
+    const apiKey = "87ad64c572e097f561cf3c5bd1718cde";
+    const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+    fetch(forecastApiUrl)
+        .then(response => response.json())
+        .then(forecastData => {
+            displayForecast(forecastData.list);
+        })
+        .catch(error => console.log('Error getting weather data: ', error))
+}
+
 // The below parses the current weather data into HTML elements
-function displayWeather(currentWeather) {
+function displayWeather(weatherData) {
+    const weatherDataMain = document.getElementById("weatherDataMainContainer");
+    weatherDataMain.innerHTML = "";
+
     const celsius = weatherData.main.temp;
     const fahrenheit = (celsius * (9/5)) + 32;
 
-    const weatherDataMain = document.getElementById("weatherData");
-    weatherDataMain.setAttribute('class', 'weatherDataMain')
-
     const weatherHeaderMain = document.createElement('div');
-    weatherHeaderMain.setAttribute('class', 'weatherHeaderMain')
+    weatherHeaderMain.setAttribute('id', 'weatherHeaderMain')
 
     const weatherDisplay = document.createElement('h3');
-    weatherDisplay.textContent = weatherData.name;
+    weatherDisplay.textContent = `${weatherData.name} Weather`;
 
     const weatherTemperature = document.createElement('p');
     weatherTemperature.textContent = `Temperature: ${celsius.toFixed(0)}°C / ${fahrenheit.toFixed(0)}°F`;
@@ -346,54 +357,12 @@ function displayWeather(currentWeather) {
     weatherWindSpeed.textContent = `Wind Speed: ${weatherData.wind.speed} m/s`;
 
     // The following conditional statements give us the appropriate icon for the weather
-    let weatherIcon = new Image();
-    
-    if (weatherData.weather[0].main === "Thunderstorm" ||
-        (weatherData.weather[0].id >= 200 && weatherData.weather[0].main <= 299)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/11d.png"
-    } else if (weatherData.weather[0].main === "Drizzle" ||
-        (weatherData.weather[0].id >= 300 && weatherData.weather[0].main <= 399)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/09d.png"
-    } else if (weatherData.weather[0].main === "Rain" &&
-        (weatherData.weather[0].id >= 500 && weatherData.weather[0].main <= 504)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/10d.png"
-    } else if (weatherData.weather[0].main === "Rain" &&
-        (weatherData.weather[0].id === 511)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/13d.png"
-    } else if (weatherData.weather[0].main === "Rain" &&
-        (weatherData.weather[0].id >= 520 && weatherData.weather[0].main <= 599)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/09d.png"
-    } else if (weatherData.weather[0].main === "Snow" ||
-        (weatherData.weather[0].id >= 600 && weatherData.weather[0].main <= 699)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/13d.png"
-    } else if (weatherData.weather[0].main === "Mist" ||
-        (weatherData.weather[0].main === "Smoke") ||
-        (weatherData.weather[0].main === "Haze") ||
-        (weatherData.weather[0].main === "Dust") ||
-        (weatherData.weather[0].main === "Fog") ||
-        (weatherData.weather[0].main === "Sand") ||
-        (weatherData.weather[0].main === "Ash") ||
-        (weatherData.weather[0].main === "Squall") ||
-        (weatherData.weather[0].main === "Tornado") ||
-        (weatherData.weather[0].id >= 700 && weatherData.weather[0].main <= 799)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/50d.png"
-    } else if (weatherData.weather[0].main === "Clear" ||
-        (weatherData.weather[0].id === 800)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/01d.png"
-    } else if (weatherData.weather[0].main === "Clouds" &&
-        (weatherData.weather[0].id === 801)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/02d.png"
-    } else if (weatherData.weather[0].main === "Clouds" &&
-        (weatherData.weather[0].id === 802)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/03d.png"
-    } else if (weatherData.weather[0].main === "Clouds" &&
-        (weatherData.weather[0].id >= 803 && weatherData.weather[0].id <= 804)) {
-        weatherIcon.src = "https://openweathermap.org/img/wn/04d.png"
-    } else {
-        weatherIcon.src = "https://openweathermap.org/img/wn/03d.png"
-    }
-
-    const weatherIconWrapper = document.createElement('p')
+    const weatherIconWrapper = document.createElement('p');
+    const weatherIconCode = weatherData.weather[0].icon;
+    const weatherIconUrl = `https://openweathermap.org/img/wn/${weatherIconCode}.png`;
+    const weatherIcon = document.createElement('img');
+    weatherIcon.setAttribute('src', weatherIconUrl)
+    weatherIcon.setAttribute('alt', 'weather icon');
 
     weatherIconWrapper.appendChild(weatherIcon)
     weatherHeaderMain.appendChild(weatherDisplay);
@@ -406,5 +375,68 @@ function displayWeather(currentWeather) {
 }
 
 function displayForecast(forecast) {
+    const forecastContainerHTML = document.getElementById("weatherForecastDataContainer");
+    forecastContainerHTML.innerHTML = "";
 
+    for (let i = 0; i < forecast.length; i += 8) {
+        
+        const dayForecast = forecast[i];
+        const dateForecast = new Date(dayForecast.dt * 1000);
+        const dayOfWeekForecast = dateForecast.toLocaleDateString('en-US', { weekday: 'short'});
+
+        let totalTemperature = 0;
+        let totalHumidity = 0;
+        let totalWindSpeed = 0;
+
+        for (let j = i; j < i + 8; j++) {
+            totalTemperature += forecast[j].main.temp;
+            totalHumidity += forecast[j].main.humidity;
+            totalWindSpeed += forecast[j].wind.speed;
+        }
+
+        const celsiusForecast = totalTemperature / 8;
+        const fahrenheitForecast = (celsiusForecast * (9/5)) + 32;
+        const humidityForecast = totalHumidity / 8;
+        const windSpeedForecast = totalWindSpeed / 8;
+
+        const weatherConditionForecast = forecast[i + 3].weather[0].main;
+
+
+        const forecastHTML = document.createElement('div');
+        forecastHTML.setAttribute('class', 'forecastDisplay');
+
+        const dayOfWeekForecastHTML = document.createElement('p');
+        dayOfWeekForecastHTML.setAttribute('class', 'forecastDay');
+        dayOfWeekForecastHTML.textContent = dayOfWeekForecast;
+
+        const temperatureForecastHTML = document.createElement('p');
+        temperatureForecastHTML.textContent = `${celsiusForecast.toFixed(0)}°C / ${fahrenheitForecast.toFixed(0)}`;
+
+        const weatherConditionForecastHTML = document.createElement('p');
+        weatherConditionForecastHTML.textContent = weatherConditionForecast
+
+        const humidityForecastHTML = document.createElement('p');
+        humidityForecastHTML.textContent = `Humidity: ${humidityForecast.toFixed(0)}%`;
+    
+        const windSpeedForecastHTML = document.createElement('p');
+        windSpeedForecastHTML.textContent = `Wind Speed: ${windSpeedForecast.toFixed(2)} m/s`;
+
+        const forecastHeaderHTML = document.createElement('p')
+        const forecastIconWrapper = document.createElement('p')
+        const forecastIconCode = forecast[i].weather[0].icon;
+        const forecastIconUrl = `https://openweathermap.org/img/wn/${forecastIconCode}.png`;
+        const forecastIcon = document.createElement('img');
+        forecastIcon.setAttribute('src', forecastIconUrl)
+        forecastIcon.setAttribute('alt', 'weather icon');
+
+        forecastIconWrapper.appendChild(forecastIcon);
+        forecastHeaderHTML.appendChild(dayOfWeekForecastHTML);
+        forecastHeaderHTML.appendChild(forecastIconWrapper);
+        forecastHTML.appendChild(forecastHeaderHTML);
+        forecastHTML.appendChild(temperatureForecastHTML);
+        forecastHTML.appendChild(weatherConditionForecastHTML);
+        forecastHTML.appendChild(humidityForecastHTML);
+        forecastHTML.appendChild(windSpeedForecastHTML);
+        forecastContainerHTML.appendChild(forecastHTML);
+    };
 }
