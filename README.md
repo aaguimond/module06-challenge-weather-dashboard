@@ -28,7 +28,7 @@
 
 [Git Hub Repository](https://github.com/aaguimond/module06-challenge-weather-dashboard)
 
-[Live Task Board Page](https://aaguimond.github.io/module06-challenge-weather-dashboard/)
+[Live Weather Dashboard](https://aaguimond.github.io/module06-challenge-weather-dashboard/)
 
 ## Screenshots of Completed Site Build
 
