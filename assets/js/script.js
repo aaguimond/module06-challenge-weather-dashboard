@@ -347,9 +347,6 @@ function displayWeather(weatherData) {
     const weatherDataMain = document.getElementById("weatherDataMainContainer");
     weatherDataMain.innerHTML = "";
 
-    const currentDate = new Date().toDateString();
-    const formattedCurrentDate = currentDate.slice(0, -5);
-
     const celsius = weatherData.main.temp;
     const fahrenheit = (celsius * (9/5)) + 32;
 
@@ -358,10 +355,6 @@ function displayWeather(weatherData) {
 
     const weatherDisplay = document.createElement('h3');
     weatherDisplay.textContent = `${weatherData.name} Weather`;
-
-    const currentDateElement = document.createElement('p');
-    currentDateElement.textContent = formattedCurrentDate;
-    currentDateElement.classList.add('currentDate');
 
     const weatherTemperature = document.createElement('p');
     weatherTemperature.textContent = `Temperature: ${celsius.toFixed(0)}°C / ${fahrenheit.toFixed(0)}°F`;
@@ -386,7 +379,6 @@ function displayWeather(weatherData) {
     weatherHeaderMain.appendChild(weatherDisplay);
     weatherHeaderMain.appendChild(weatherIconWrapper);
     weatherDataMain.appendChild(weatherHeaderMain);
-    weatherDataMain.appendChild(currentDateElement);
     weatherDataMain.appendChild(weatherTemperature);
     weatherDataMain.appendChild(weatherDescription);
     weatherDataMain.appendChild(weatherHumidity);

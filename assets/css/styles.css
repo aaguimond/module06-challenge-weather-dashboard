@@ -102,7 +102,6 @@ body div div button {
 #weatherHeaderMain {
     margin: 0 2% 0 2%;
     display: inline-flex;
-    height: 30%;
 }
 
 #weatherHeaderMain h3 {
@@ -115,15 +114,6 @@ body div div button {
     1px -1px 0 #000,
     -1px 1px 0 #000,
     1px 1px 0 #000; 
-}
-
-#weatherDataMainContainer p {
-    line-height: 95%;
-}
-
-.currentDate {
-    font-weight: 600;
-    text-decoration: underline;
 }
 
 #weatherForecastDataContainer {
