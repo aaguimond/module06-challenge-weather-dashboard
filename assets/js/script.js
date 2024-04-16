@@ -401,7 +401,7 @@ function displayForecast(forecast) {
     // each of the five days of forecast data
     for (let i = 0; i < forecast.length; i += 8) {
         
-        const dayForecast = forecast[i + 8];
+        const dayForecast = forecast[i];
         // Translating unix timecode to milliseconds
         const dateForecast = new Date(dayForecast.dt * 1000);
         // Displaying a shortened day (e.g. Mon, Tue, Wed)
