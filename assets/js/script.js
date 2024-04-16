@@ -347,6 +347,9 @@ function displayWeather(weatherData) {
     const weatherDataMain = document.getElementById("weatherDataMainContainer");
     weatherDataMain.innerHTML = "";
 
+    const currentDate = new Date().toDateString();
+    const formattedCurrentDate = currentDate.slice(0, -5);
+
     const celsius = weatherData.main.temp;
     const fahrenheit = (celsius * (9/5)) + 32;
 
@@ -355,6 +358,10 @@ function displayWeather(weatherData) {
 
     const weatherDisplay = document.createElement('h3');
     weatherDisplay.textContent = `${weatherData.name} Weather`;
+
+    const currentDateElement = document.createElement('p');
+    currentDateElement.textContent = formattedCurrentDate;
+    currentDateElement.classList.add('currentDate');
 
     const weatherTemperature = document.createElement('p');
     weatherTemperature.textContent = `Temperature: ${celsius.toFixed(0)}°C / ${fahrenheit.toFixed(0)}°F`;
@@ -379,6 +386,7 @@ function displayWeather(weatherData) {
     weatherHeaderMain.appendChild(weatherDisplay);
     weatherHeaderMain.appendChild(weatherIconWrapper);
     weatherDataMain.appendChild(weatherHeaderMain);
+    weatherDataMain.appendChild(currentDateElement);
     weatherDataMain.appendChild(weatherTemperature);
     weatherDataMain.appendChild(weatherDescription);
     weatherDataMain.appendChild(weatherHumidity);
@@ -393,11 +401,13 @@ function displayForecast(forecast) {
     // each of the five days of forecast data
     for (let i = 0; i < forecast.length; i += 8) {
         
-        const dayForecast = forecast[i];
+        const dayForecast = forecast[i + 8];
         // Translating unix timecode to milliseconds
         const dateForecast = new Date(dayForecast.dt * 1000);
         // Displaying a shortened day (e.g. Mon, Tue, Wed)
         const dayOfWeekForecast = dateForecast.toLocaleDateString('en-US', { weekday: 'short'});
+        // Displaying a shortened month and a numeric day
+        const monthDateForecast = dateForecast.toLocaleDateString('en-US', { month: 'short', day: 'numeric'});
         // Declaring our weather data sums for our averages
         let totalTemperature = 0;
         let totalHumidity = 0;
@@ -424,28 +434,33 @@ function displayForecast(forecast) {
         dayOfWeekForecastHTML.setAttribute('class', 'forecastDay');
         dayOfWeekForecastHTML.textContent = dayOfWeekForecast;
 
+        const monthDateForecastHTML = document.createElement('p');
+        monthDateForecastHTML.setAttribute('class', 'monthDateForecast');
+        monthDateForecastHTML.classList.add('forecastSubtext');
+        monthDateForecastHTML.textContent = monthDateForecast;
+
         const temperatureForecastHTML = document.createElement('p');
         temperatureForecastHTML.textContent = `${celsiusForecast.toFixed(0)}°C / ${fahrenheitForecast.toFixed(0)}°F`;
-        temperatureForecastHTML.classList.add('forecastSubtext')
+        temperatureForecastHTML.classList.add('forecastSubtext');
 
         const weatherConditionForecastHTML = document.createElement('p');
         weatherConditionForecastHTML.textContent = weatherConditionForecast
-        weatherConditionForecastHTML.classList.add('forecastSubtext')
+        weatherConditionForecastHTML.classList.add('forecastSubtext');
 
         const humidityForecastHTML = document.createElement('p');
         humidityForecastHTML.textContent = `Humidity: ${humidityForecast.toFixed(0)}%`;
-        humidityForecastHTML.classList.add('forecastSubtext')
+        humidityForecastHTML.classList.add('forecastSubtext');
     
         const windSpeedForecastHTML = document.createElement('p');
         windSpeedForecastHTML.textContent = `Wind Speed: ${windSpeedForecast.toFixed(2)} m/s`;
-        windSpeedForecastHTML.classList.add('forecastSubtext')
+        windSpeedForecastHTML.classList.add('forecastSubtext');
 
         const forecastHeaderHTML = document.createElement('p')
-        forecastHeaderHTML.classList.add('forecastHeader')
+        forecastHeaderHTML.classList.add('forecastHeader');
 
         const forecastIconWrapper = document.createElement('p')
         forecastIconWrapper.classList.add('forecastIconWrapper')
-        const forecastIconCode = forecast[i].weather[0].icon;
+        const forecastIconCode = forecast[i + 3].weather[0].icon;
         const forecastIconUrl = `https://openweathermap.org/img/wn/${forecastIconCode}.png`;
         const forecastIcon = document.createElement('img');
         forecastIcon.setAttribute('src', forecastIconUrl)
@@ -455,6 +470,7 @@ function displayForecast(forecast) {
         forecastHeaderHTML.appendChild(dayOfWeekForecastHTML);
         forecastHeaderHTML.appendChild(forecastIconWrapper);
         forecastHTML.appendChild(forecastHeaderHTML);
+        forecastHTML.appendChild(monthDateForecastHTML);
         forecastHTML.appendChild(temperatureForecastHTML);
         forecastHTML.appendChild(weatherConditionForecastHTML);
         forecastHTML.appendChild(humidityForecastHTML);
